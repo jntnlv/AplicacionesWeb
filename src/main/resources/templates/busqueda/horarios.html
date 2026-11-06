@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <h1 class="h3 mb-1">[[#{busqueda.horarios}]]</h1>
+            <p class="mb-0" th:text="${tutorNombre}"></p>
+            <p class="mb-3 text-secondary" th:text="${materiaNombre}"></p>
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <section class="tarjeta-acceso">
+                        <p th:if="${horarios == null or horarios.empty}" class="mb-0">[[#{busqueda.horarios.vacio}]]</p>
+                        <div class="table-responsive" th:if="${horarios != null and !horarios.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{horario.fecha}]]</th>
+                                        <th>[[#{horario.hora}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="horario : ${horarios}">
+                                        <td th:text="${horario.fecha}"></td>
+                                        <td th:text="${horario.hora}"></td>
+                                        <td class="text-end">
+                                            <span th:if="${horario.solicitada}" class="badge text-bg-warning">[[#{solicitud.pendiente}]]</span>
+                                            <form th:unless="${horario.solicitada}" method="post" th:action="@{/buscar/solicitar}" class="mb-0">
+                                                <input type="hidden" name="idTutor" th:value="${idTutor}"/>
+                                                <input type="hidden" name="idMateria" th:value="${idMateria}"/>
+                                                <input type="hidden" name="idDisponibilidad" th:value="${horario.idDisponibilidad}"/>
+                                                <button class="btn btn-success btn-sm" type="submit">[[#{solicitud.boton}]]</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <a class="enlace-acceso d-inline-block mt-3"
+                           th:href="@{/buscar(idMateria=${idMateria})}">[[#{busqueda.volver}]]</a>
+                    </section>
+                </div>
+                <div class="col-lg-4">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{busqueda.horarios.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalHorarios}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+    </body>
+</html>

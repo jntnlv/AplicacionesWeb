@@ -11,6 +11,8 @@
                class="enlace-acceso" th:href="@{/tutor/listado}">[[#{tutor.menu}]]</a>
             <a th:if="${usuario != null and usuario.rol.name() == 'ADMIN'}"
                class="enlace-acceso" th:href="@{/materia/listado}">[[#{materia.menu}]]</a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'ESTUDIANTE'}"
+               class="enlace-acceso" th:href="@{/buscar}">[[#{busqueda.menu}]]</a>
             <a th:if="${usuario != null and usuario.rol.name() == 'TUTOR'}"
                class="enlace-acceso" th:href="@{/horario/listado}">[[#{horario.menu}]]</a>
             <a th:if="${usuario != null and usuario.rol.name() == 'TUTOR'}"

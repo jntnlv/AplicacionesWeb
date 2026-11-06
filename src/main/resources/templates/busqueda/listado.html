@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <h1 class="h3 mb-3">[[#{busqueda.titulo}]]</h1>
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <section class="tarjeta-acceso">
+                        <form class="row g-3 align-items-end" method="get" th:action="@{/buscar}">
+                            <div class="col-md-8">
+                                <label for="idMateria">[[#{busqueda.materia}]]</label>
+                                <select id="idMateria" class="form-select" name="idMateria" required="required">
+                                    <option value="" th:if="${idMateria == null}">[[#{busqueda.elige}]]</option>
+                                    <option th:each="materia : ${materias}"
+                                            th:value="${materia.idMateria}"
+                                            th:text="${materia.nombre}"
+                                            th:selected="${idMateria != null and idMateria.equals(materia.idMateria)}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-acceso w-100" type="submit">[[#{busqueda.boton}]]</button>
+                            </div>
+                        </form>
+                        <p th:if="${materias == null or materias.empty}" class="mb-0 mt-3">[[#{busqueda.catalogoVacio}]]</p>
+                    </section>
+                    <section class="tarjeta-acceso mt-3" th:if="${buscado}">
+                        <p th:if="${tutores == null or tutores.empty}" class="mb-0">[[#{busqueda.vacio}]]</p>
+                        <div class="table-responsive" th:if="${tutores != null and !tutores.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{acceso.nombre}]]</th>
+                                        <th>[[#{acceso.correo}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="tutor : ${tutores}">
+                                        <td th:text="${tutor.nombre}"></td>
+                                        <td th:text="${tutor.correo}"></td>
+                                        <td class="text-end">
+                                            <a class="btn btn-acceso btn-sm"
+                                               th:href="@{/buscar/horarios(idTutor=${tutor.idTutor},idMateria=${idMateria})}">[[#{busqueda.verHorarios}]]</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-lg-4">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{busqueda.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalTutores}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

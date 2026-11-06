@@ -11,6 +11,8 @@ public interface TutorMateriaRepository extends JpaRepository<TutorMateria, Inte
 
     List<TutorMateria> findByTutor_IdUsuario(Integer idUsuario);
 
+    boolean existsByTutor_IdUsuarioAndMateria_IdMateria(Integer idTutor, Integer idMateria);
+
     @Query("""
             select relacion from TutorMateria relacion
             join fetch relacion.materia
@@ -19,4 +21,15 @@ public interface TutorMateriaRepository extends JpaRepository<TutorMateria, Inte
             order by tutor.nombreCompleto asc, relacion.materia.nombre asc
             """)
     List<TutorMateria> findConMateriaPorRol(@Param("rol") Rol rol);
+
+    @Query("""
+            select relacion from TutorMateria relacion
+            join fetch relacion.tutor tutor
+            join fetch relacion.materia materia
+            where materia.idMateria = :idMateria
+            and tutor.rol = :rol
+            and tutor.activo = true
+            order by tutor.nombreCompleto asc
+            """)
+    List<TutorMateria> findTutoresActivosPorMateria(@Param("idMateria") Integer idMateria, @Param("rol") Rol rol);
 }
