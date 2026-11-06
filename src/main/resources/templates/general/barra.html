@@ -1,0 +1,23 @@
+<header th:fragment="barra(usuario)" class="barra-superior border-bottom">
+    <div class="container py-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-4">
+            <a th:href="@{/inicio}" class="text-decoration-none text-dark d-flex align-items-center gap-2">
+                <span class="logo-marca">Logo</span>
+                <span class="fw-bold fs-5">AulaLink</span>
+            </a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'ADMIN'}"
+               class="enlace-acceso" th:href="@{/estudiante/listado}">[[#{estudiante.menu}]]</a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'ADMIN'}"
+               class="enlace-acceso" th:href="@{/tutor/listado}">[[#{tutor.menu}]]</a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'ADMIN'}"
+               class="enlace-acceso" th:href="@{/materia/listado}">[[#{materia.menu}]]</a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'TUTOR'}"
+               class="enlace-acceso" th:href="@{/horario/listado}">[[#{horario.menu}]]</a>
+            <a th:if="${usuario != null and usuario.rol.name() == 'TUTOR'}"
+               class="enlace-acceso" th:href="@{/solicitud/listado}">[[#{solicitud.menu}]]</a>
+        </div>
+        <form th:action="@{/salir}" method="post" class="mb-0">
+            <button class="btn btn-acceso" type="submit">[[#{acceso.salir}]]</button>
+        </form>
+    </div>
+</header>

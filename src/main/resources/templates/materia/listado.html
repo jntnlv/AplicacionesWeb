@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 mb-0">[[#{materia.listado}]]</h1>
+                <button type="button" class="btn btn-acceso"
+                        data-bs-toggle="modal" data-bs-target="#materiaModal"
+                        data-modo="agregar"
+                        th:data-titulo="#{materia.agregar}">
+                    <i class="fa-solid fa-plus"></i> [[#{materia.agregar}]]
+                </button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-lg-9">
+                    <section class="tarjeta-acceso">
+                        <p th:if="${materias == null or materias.empty}" class="mb-0">[[#{materia.vacio}]]</p>
+                        <div class="table-responsive" th:if="${materias != null and !materias.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{materia.nombre}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="materia : ${materias}">
+                                        <td th:text="${materia.nombre}"></td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#materiaModal"
+                                                    data-modo="editar"
+                                                    th:data-titulo="#{materia.editar}"
+                                                    th:data-id="${materia.idMateria}"
+                                                    th:data-nombre="${materia.nombre}">
+                                                <i class="fa-solid fa-pen"></i> [[#{accion.actualizar}]]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-lg-3">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{materia.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalMaterias}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal fade" id="materiaModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" th:action="@{/materia/guardar}">
+                        <div class="modal-header">
+                            <h2 class="modal-title h5" id="materiaModalTitulo">[[#{materia.agregar}]]</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{accion.cerrar}"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="materiaId" name="idMateria"/>
+                            <div class="mb-3">
+                                <label for="materiaNombre">[[#{materia.nombre}]]</label>
+                                <input id="materiaNombre" class="form-control" type="text" name="nombre" maxlength="80" required="required"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">[[#{accion.cerrar}]]</button>
+                            <button type="submit" class="btn btn-acceso">[[#{accion.guardar}]]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+        <script th:src="@{/js/modulos/materia.js}"></script>
+    </body>
+</html>

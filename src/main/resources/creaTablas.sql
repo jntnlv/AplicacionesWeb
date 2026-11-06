@@ -10,7 +10,9 @@ create database aulalink
   default collate utf8mb4_unicode_ci;
 
 create user 'usuario_prueba'@'%' identified by 'Usuar1o_Clave.';
+create user 'usuario_prueba'@'localhost' identified by 'Usuar1o_Clave.';
 grant select, insert, update, delete on aulalink.* to 'usuario_prueba'@'%';
+grant select, insert, update, delete on aulalink.* to 'usuario_prueba'@'localhost';
 flush privileges;
 
 use aulalink;
@@ -78,3 +80,6 @@ insert into materia (nombre) values
   ('Cálculo I'),
   ('Programación I'),
   ('Bases de Datos');
+
+insert into usuario (nombre_completo, correo, contrasena, rol, activo) values
+  ('Administrador', 'admin@aulalink.com', '$2a$10$gB/8Niz2B5j89xP80nvRuOlt68uMWXeX69mG0YRRU4gRmDZeCz/6O', 'ADMIN', true);

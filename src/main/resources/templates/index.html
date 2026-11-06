@@ -1,42 +1,80 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{general/fragmentos :: head}"></head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>AulaLink</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    </head>
     <body>
-        <header th:replace="~{general/fragmentos :: header}"></header>
+        <header class="barra-superior border-bottom">
+            <div class="container py-3 d-flex align-items-center gap-2">
+                <span class="logo-marca">Logo</span>
+                <span class="fw-bold fs-5">AulaLink</span>
+            </div>
+        </header>
+
+        <section class="banner-bienvenida">
+            <div class="container py-4 py-md-5">
+                <h1 class="mb-2">[[#{index.bienvenida}]]</h1>
+                <p>[[#{index.subtitulo}]]</p>
+            </div>
+        </section>
+
         <main class="container py-4">
-            <section class="mb-4">
-                <h2>[[#{index.titulo}]]</h2>
-                <p class="lead">[[#{index.descripcion}]]</p>
-            </section>
-            <section class="row g-3">
-                <div class="col-md-4">
-                    <article class="card h-100 border-primary">
-                        <div class="card-body">
-                            <h3 class="card-title h5"><i class="fa-solid fa-user-graduate"></i> [[#{index.estudiante.titulo}]]</h3>
-                            <p class="card-text">[[#{index.estudiante.texto}]]</p>
-                        </div>
-                    </article>
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-6" id="iniciar-sesion">
+                    <section class="tarjeta-acceso">
+                        <h2>[[#{acceso.login.titulo}]]</h2>
+                        <div th:if="${errorLogin}" class="alert alert-danger py-2" role="alert">[[${errorLogin}]]</div>
+                        <form th:action="@{/login}" method="post">
+                            <div class="mb-3">
+                                <label for="correoLogin">[[#{acceso.correo}]]</label>
+                                <input id="correoLogin" class="form-control" type="email" name="correo"
+                                       th:placeholder="#{acceso.placeholder.correo}"
+                                       th:value="${correoLogin}" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contrasenaLogin">[[#{acceso.contrasena}]]</label>
+                                <input id="contrasenaLogin" class="form-control" type="password" name="contrasena" required="required"/>
+                            </div>
+                            <button class="btn btn-acceso" type="submit">[[#{acceso.login.boton}]]</button>
+                        </form>
+                        <p class="nota-acceso mt-3 mb-2">[[#{acceso.login.inactivo}]]</p>
+                        <a class="enlace-acceso d-block" href="#iniciar-sesion">[[#{acceso.tutor}]]</a>
+                        <a class="enlace-acceso d-block mt-1" href="#iniciar-sesion">[[#{acceso.admin}]]</a>
+                    </section>
                 </div>
-                <div class="col-md-4">
-                    <article class="card h-100 border-success">
-                        <div class="card-body">
-                            <h3 class="card-title h5"><i class="fa-solid fa-chalkboard-user"></i> [[#{index.tutor.titulo}]]</h3>
-                            <p class="card-text">[[#{index.tutor.texto}]]</p>
-                        </div>
-                    </article>
+
+                <div class="col-lg-6" id="registro">
+                    <section class="tarjeta-acceso">
+                        <h2>[[#{acceso.registro.titulo}]]</h2>
+                        <div th:if="${registroOk}" class="alert alert-success py-2" role="status">[[${registroOk}]]</div>
+                        <div th:if="${errorRegistro}" class="alert alert-danger py-2" role="alert">[[${errorRegistro}]]</div>
+                        <form th:action="@{/registro}" method="post">
+                            <div class="mb-3">
+                                <label for="nombreCompleto">[[#{acceso.nombre}]]</label>
+                                <input id="nombreCompleto" class="form-control" type="text" name="nombreCompleto"
+                                       th:placeholder="#{acceso.placeholder.nombre}"
+                                       th:value="${nombreCompleto}" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="correoRegistro">[[#{acceso.correo}]]</label>
+                                <input id="correoRegistro" class="form-control" type="email" name="correo"
+                                       th:placeholder="#{acceso.placeholder.correo}"
+                                       th:value="${correoRegistro}" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contrasenaRegistro">[[#{acceso.contrasena}]]</label>
+                                <input id="contrasenaRegistro" class="form-control" type="password" name="contrasena"
+                                       minlength="8" th:placeholder="#{acceso.placeholder.contrasena}" required="required"/>
+                            </div>
+                            <button class="btn btn-acceso" type="submit">[[#{acceso.registro.boton}]]</button>
+                        </form>
+                    </section>
                 </div>
-                <div class="col-md-4">
-                    <article class="card h-100 border-dark">
-                        <div class="card-body">
-                            <h3 class="card-title h5"><i class="fa-solid fa-user-shield"></i> [[#{index.admin.titulo}]]</h3>
-                            <p class="card-text">[[#{index.admin.texto}]]</p>
-                        </div>
-                    </article>
-                </div>
-            </section>
-            <p class="text-secondary mt-4">[[#{index.siguiente}]]</p>
+            </div>
         </main>
-        <footer th:replace="~{general/fragmentos :: footer}"></footer>
     </body>
 </html>

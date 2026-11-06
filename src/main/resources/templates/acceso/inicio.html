@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>AulaLink</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    </head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-5">
+            <h1 class="h3">[[#{acceso.sesion}]]</h1>
+            <p class="lead mb-1" th:text="${usuario.nombreCompleto}"></p>
+            <p class="text-secondary" th:text="${usuario.rol}"></p>
+        </main>
+    </body>
+</html>

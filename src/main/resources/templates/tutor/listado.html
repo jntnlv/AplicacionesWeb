@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 mb-0">[[#{tutor.listado}]]</h1>
+                <button type="button" class="btn btn-acceso"
+                        data-bs-toggle="modal" data-bs-target="#tutorModal"
+                        data-modo="agregar"
+                        th:data-titulo="#{tutor.agregar}">
+                    <i class="fa-solid fa-plus"></i> [[#{tutor.agregar}]]
+                </button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-lg-9">
+                    <section class="tarjeta-acceso">
+                        <p th:if="${tutores == null or tutores.empty}" class="mb-0">[[#{tutor.vacio}]]</p>
+                        <div class="table-responsive" th:if="${tutores != null and !tutores.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{acceso.nombre}]]</th>
+                                        <th>[[#{acceso.correo}]]</th>
+                                        <th>[[#{tutor.materias}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="vista : ${tutores}">
+                                        <td th:text="${vista.tutor.nombreCompleto}"></td>
+                                        <td th:text="${vista.tutor.correo}"></td>
+                                        <td>
+                                            <span th:if="${!vista.textoMaterias.isEmpty()}" th:text="${vista.textoMaterias}"></span>
+                                            <span th:if="${vista.textoMaterias.isEmpty()}" th:text="#{tutor.sinMaterias}"></span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#tutorModal"
+                                                    data-modo="editar"
+                                                    th:data-titulo="#{tutor.editar}"
+                                                    th:data-id="${vista.tutor.idUsuario}"
+                                                    th:data-nombre="${vista.tutor.nombreCompleto}"
+                                                    th:data-correo="${vista.tutor.correo}"
+                                                    th:data-materias="${vista.idsMaterias}">
+                                                <i class="fa-solid fa-pen"></i> [[#{accion.actualizar}]]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-lg-3">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{tutor.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalTutores}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal fade" id="tutorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" th:action="@{/tutor/guardar}">
+                        <div class="modal-header">
+                            <h2 class="modal-title h5" id="tutorModalTitulo">[[#{tutor.agregar}]]</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{accion.cerrar}"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="tutorId" name="idUsuario"/>
+                            <div class="mb-3">
+                                <label for="tutorNombre">[[#{acceso.nombre}]]</label>
+                                <input id="tutorNombre" class="form-control" type="text" name="nombreCompleto" maxlength="120" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tutorCorreo">[[#{acceso.correo}]]</label>
+                                <input id="tutorCorreo" class="form-control" type="email" name="correo" maxlength="120" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tutorContrasena">[[#{acceso.contrasena}]]</label>
+                                <input id="tutorContrasena" class="form-control" type="password" name="contrasena" minlength="8"/>
+                                <p class="nota-acceso mt-2 mb-0">[[#{estudiante.contrasena.nota}]]</p>
+                            </div>
+                            <fieldset>
+                                <legend class="fs-6 fw-semibold">[[#{tutor.materias}]]</legend>
+                                <p th:if="${materias == null or materias.empty}" class="nota-acceso mb-0">[[#{tutor.catalogoVacio}]]</p>
+                                <div class="form-check" th:each="materia : ${materias}">
+                                    <input class="form-check-input materia-check" type="checkbox" name="idMaterias"
+                                           th:id="|materia-${materia.idMateria}|" th:value="${materia.idMateria}"/>
+                                    <label class="form-check-label" th:for="|materia-${materia.idMateria}|" th:text="${materia.nombre}"></label>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">[[#{accion.cerrar}]]</button>
+                            <button type="submit" class="btn btn-acceso">[[#{accion.guardar}]]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+        <script th:src="@{/js/modulos/tutor.js}"></script>
+    </body>
+</html>

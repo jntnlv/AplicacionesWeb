@@ -1,12 +1,80 @@
 body {
-    background-color: #f4f7fb;
+    background-color: #f3f3f3;
+    color: #212529;
     min-height: 100vh;
 }
 
-.banner {
-    background-color: #0d47a1;
+.barra-superior {
+    background-color: #fff;
 }
 
-footer {
-    background-color: #0d47a1;
+.logo-marca {
+    background-color: #e6e6e6;
+    color: #6b6b6b;
+    font-size: 0.85rem;
+    line-height: 1;
+    padding: 0.45rem 0.7rem;
+}
+
+.banner-bienvenida {
+    background-color: #d5d5d5;
+}
+
+.banner-bienvenida h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.banner-bienvenida p {
+    color: #4d4d4d;
+    margin-bottom: 0;
+}
+
+.tarjeta-acceso {
+    background-color: #fff;
+    border: 1px solid #d7d7d7;
+    border-radius: 0.35rem;
+    padding: 1.25rem 1.35rem 1.4rem;
+}
+
+.tarjeta-acceso h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.tarjeta-acceso label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.tarjeta-acceso .form-control {
+    border-color: #cfcfcf;
+    border-radius: 0.2rem;
+}
+
+.btn-acceso {
+    background-color: #2b2b2b;
+    border: none;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.4rem 0.85rem;
+}
+
+.btn-acceso:hover {
+    background-color: #111;
+    color: #fff;
+}
+
+.nota-acceso {
+    color: #6a6a6a;
+    font-size: 0.82rem;
+}
+
+.enlace-acceso {
+    color: #212529;
+    font-size: 0.95rem;
+    text-decoration: underline;
 }

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 mb-0">[[#{estudiante.listado}]]</h1>
+                <button type="button" class="btn btn-acceso"
+                        data-bs-toggle="modal" data-bs-target="#estudianteModal"
+                        data-modo="agregar"
+                        data-activo="true"
+                        th:data-titulo="#{estudiante.agregar}">
+                    <i class="fa-solid fa-plus"></i> [[#{estudiante.agregar}]]
+                </button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-lg-9">
+                    <section class="tarjeta-acceso">
+                        <p th:if="${estudiantes == null or estudiantes.empty}" class="mb-0">[[#{estudiante.vacio}]]</p>
+                        <div class="table-responsive" th:if="${estudiantes != null and !estudiantes.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{acceso.nombre}]]</th>
+                                        <th>[[#{acceso.correo}]]</th>
+                                        <th>[[#{estudiante.estado}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="estudiante : ${estudiantes}">
+                                        <td th:text="${estudiante.nombreCompleto}"></td>
+                                        <td th:text="${estudiante.correo}"></td>
+                                        <td th:text="${estudiante.activo} ? #{estudiante.activo} : #{estudiante.inactivo}"></td>
+                                        <td class="text-end">
+                                            <button type="button" class="btn btn-outline-dark btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#estudianteModal"
+                                                    data-modo="editar"
+                                                    th:data-titulo="#{estudiante.editar}"
+                                                    th:data-id="${estudiante.idUsuario}"
+                                                    th:data-nombre="${estudiante.nombreCompleto}"
+                                                    th:data-correo="${estudiante.correo}"
+                                                    th:data-activo="${estudiante.activo}">
+                                                <i class="fa-solid fa-pen"></i> [[#{accion.actualizar}]]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-lg-3">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{estudiante.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalEstudiantes}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal fade" id="estudianteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" th:action="@{/estudiante/guardar}">
+                        <div class="modal-header">
+                            <h2 class="modal-title h5" id="estudianteModalTitulo">[[#{estudiante.agregar}]]</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" th:aria-label="#{accion.cerrar}"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="estudianteId" name="idUsuario"/>
+                            <div class="mb-3">
+                                <label for="estudianteNombre">[[#{acceso.nombre}]]</label>
+                                <input id="estudianteNombre" class="form-control" type="text" name="nombreCompleto" maxlength="120" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estudianteCorreo">[[#{acceso.correo}]]</label>
+                                <input id="estudianteCorreo" class="form-control" type="email" name="correo" maxlength="120" required="required"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estudianteContrasena">[[#{acceso.contrasena}]]</label>
+                                <input id="estudianteContrasena" class="form-control" type="password" name="contrasena" minlength="8"/>
+                                <p class="nota-acceso mt-2 mb-0">[[#{estudiante.contrasena.nota}]]</p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estudianteActivo">[[#{estudiante.estado}]]</label>
+                                <select id="estudianteActivo" class="form-select" name="activo">
+                                    <option value="true">[[#{estudiante.activo}]]</option>
+                                    <option value="false">[[#{estudiante.inactivo}]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">[[#{accion.cerrar}]]</button>
+                            <button type="submit" class="btn btn-acceso">[[#{accion.guardar}]]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+        <script th:src="@{/js/modulos/estudiante.js}"></script>
+    </body>
+</html>

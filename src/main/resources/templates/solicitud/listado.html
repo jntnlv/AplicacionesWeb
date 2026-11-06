@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/barra :: barra(${usuario})}"></header>
+        <main class="container py-4">
+            <h1 class="h3 mb-3">[[#{solicitud.listado}]]</h1>
+            <div class="row g-3">
+                <div class="col-lg-9">
+                    <section class="tarjeta-acceso">
+                        <p th:if="${solicitudes == null or solicitudes.empty}" class="mb-0">[[#{solicitud.vacio}]]</p>
+                        <div class="table-responsive" th:if="${solicitudes != null and !solicitudes.empty}">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>[[#{solicitud.estudiante}]]</th>
+                                        <th>[[#{solicitud.materia}]]</th>
+                                        <th>[[#{horario.fecha}]]</th>
+                                        <th>[[#{horario.hora}]]</th>
+                                        <th>[[#{estudiante.estado}]]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="solicitud : ${solicitudes}"
+                                        th:classappend="${solicitud.pendiente} ? 'table-warning' : ''">
+                                        <td th:text="${solicitud.estudiante}"></td>
+                                        <td th:text="${solicitud.materia}"></td>
+                                        <td th:text="${solicitud.fecha}"></td>
+                                        <td th:text="${solicitud.hora}"></td>
+                                        <td>
+                                            <span th:if="${solicitud.pendiente}" class="badge text-bg-warning">[[#{solicitud.pendiente}]]</span>
+                                            <span th:unless="${solicitud.pendiente}" class="badge text-bg-secondary" th:text="${solicitud.estado}"></span>
+                                        </td>
+                                        <td class="text-end">
+                                            <form th:if="${solicitud.pendiente}" method="post" th:action="@{/solicitud/decidir}" class="d-flex gap-2 justify-content-end">
+                                                <input type="hidden" name="idTutoria" th:value="${solicitud.idTutoria}"/>
+                                                <button class="btn btn-success btn-sm" type="submit" name="decision" value="aceptar">[[#{solicitud.aceptar}]]</button>
+                                                <button class="btn btn-outline-danger btn-sm" type="submit" name="decision" value="rechazar">[[#{solicitud.rechazar}]]</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-lg-3">
+                    <section class="tarjeta-acceso text-center">
+                        <h2 class="h6">[[#{solicitud.total}]]</h2>
+                        <p class="display-6 mb-0" th:text="${totalSolicitudes}">0</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+    </body>
+</html>
