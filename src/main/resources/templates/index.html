@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <main class="container py-4">
+            <section class="mb-4">
+                <h2>[[#{index.titulo}]]</h2>
+                <p class="lead">[[#{index.descripcion}]]</p>
+            </section>
+            <section class="row g-3">
+                <div class="col-md-4">
+                    <article class="card h-100 border-primary">
+                        <div class="card-body">
+                            <h3 class="card-title h5"><i class="fa-solid fa-user-graduate"></i> [[#{index.estudiante.titulo}]]</h3>
+                            <p class="card-text">[[#{index.estudiante.texto}]]</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="card h-100 border-success">
+                        <div class="card-body">
+                            <h3 class="card-title h5"><i class="fa-solid fa-chalkboard-user"></i> [[#{index.tutor.titulo}]]</h3>
+                            <p class="card-text">[[#{index.tutor.texto}]]</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-4">
+                    <article class="card h-100 border-dark">
+                        <div class="card-body">
+                            <h3 class="card-title h5"><i class="fa-solid fa-user-shield"></i> [[#{index.admin.titulo}]]</h3>
+                            <p class="card-text">[[#{index.admin.texto}]]</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <p class="text-secondary mt-4">[[#{index.siguiente}]]</p>
+        </main>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
